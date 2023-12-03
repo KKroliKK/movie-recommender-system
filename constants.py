@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 DATSET_PATH = os.path.join("..", "data", "raw", "ml-100k")
 UDATA_PATH = os.path.join(DATSET_PATH, "u.data")

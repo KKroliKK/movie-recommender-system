@@ -14,9 +14,9 @@ class Model:
 
 
 class RandomModel(Model):
-    def __init__(self, max_score = 5) -> None:
+    def __init__(self, max_score=5) -> None:
         self.max_score = max_score
-    
+
     def fit(self, ratings):
         self.shape = ratings.shape[1]
 
@@ -24,7 +24,7 @@ class RandomModel(Model):
         prediction = np.random.random(self.shape) * self.max_score
 
         return prediction
-    
+
 
 class AvgModel(Model):
     def get_avg_film_ratings(self, film_id, ratings):
@@ -35,10 +35,12 @@ class AvgModel(Model):
             avg_rating = np.average(all_ratings)
 
         return avg_rating
-    
 
     def fit(self, ratings):
-        self.avg = [self.get_avg_film_ratings(film_id, ratings) for film_id in range(ratings.shape[1])]
+        self.avg = [
+            self.get_avg_film_ratings(film_id, ratings)
+            for film_id in range(ratings.shape[1])
+        ]
         self.avg = np.array(self.avg)
 
     def predict(self, user_id):
@@ -56,15 +58,20 @@ class ColaborativeModel(Model):
 
     def predict(self, user_id):
         user_ratings = self.ratings[user_id]
-        similarities = np.array([ColaborativeModel.cos_sim(user_ratings, rating) for rating in self.ratings])
+        similarities = np.array(
+            [ColaborativeModel.cos_sim(user_ratings, rating) for rating in self.ratings]
+        )
         closest_users = list(reversed(np.argsort(similarities)))
-        closest_users = closest_users[1:self.num_users + 1]
-        
+        closest_users = closest_users[1 : self.num_users + 1]
+
         closest_similarities = similarities[closest_users]
         sum_closest_similarities = sum(closest_similarities)
 
         closest_ratingss = self.ratings[closest_users]
 
-        prediction = np.sum((closest_ratingss * closest_similarities[:, None]), axis=0) / sum_closest_similarities
+        prediction = (
+            np.sum((closest_ratingss * closest_similarities[:, None]), axis=0)
+            / sum_closest_similarities
+        )
 
         return prediction

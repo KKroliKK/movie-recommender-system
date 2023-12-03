@@ -1,8 +1,8 @@
 import sys
 from typing import Tuple
 
-import pandas as pd
 import numpy as np
+import pandas as pd
 from sklearn.model_selection import train_test_split
 
 sys.path.append("..")
@@ -24,7 +24,9 @@ def convert_raw_to_matrix(path: str) -> np.array:
     return ratings
 
 
-def split_raw_to_train_test(path: str, test_size: float = 0.2) -> Tuple[np.array, np.array]:
+def split_raw_to_train_test(
+    path: str, test_size: float = 0.2
+) -> Tuple[np.array, np.array]:
     udata = pd.read_csv(path, sep="\t", header=None)
     udata.columns = ["user_id", "item_id", "rating", "timestamp"]
 
