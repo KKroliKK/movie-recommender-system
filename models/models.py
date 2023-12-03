@@ -2,6 +2,8 @@ import numpy as np
 from numpy import dot
 from numpy.linalg import norm
 
+np.random.seed(42)
+
 
 class Model:
     def fit(self, ratings):
